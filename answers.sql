@@ -1,40 +1,45 @@
--- Question 1 Achieving 1NF
-ALTER TABLE ProductDetail
-DROP COLUMN Products;
 
-CREATE TABLE Products (
-    ProductID INT PRIMARY KEY AUTO_INCREMENT,
-    ProductName VARCHAR(50) NOT NULL,
-    order_id INT NOT NULL, 
-    FOREIGN KEY (order_id) REFERENCES ProductDetail(OrderID)
+ --  Question 1
+CREATE TABLE ProductDetail (
+    OrderID INT,
+    CustomerName VARCHAR(100),
+    Products VARCHAR(100)
 );
-
--- 5. Insert data into Products
-INSERT INTO Products (ProductName, order_id) 
-VALUES 
-    ('Laptop', 101),
-    ('Mouse', 101),
-    ('Tablet', 102),
-    ('Keyboard', 102),
-    ('Mouse', 102),
-    ('Phone', 103);
-
--- Create the customer orders table
-CREATE TABLE orders (
-    order_id INT PRIMARY KEY,
-    customer_name VARCHAR(100)
+INSERT INTO ProductDetail(OrderID, CustomerName, Products)
+VALUES
+(101, 'John Doe', 'Laptop'),
+(101, 'John Doe', 'Mouse'),
+(102, 'Jane Smith', 'Tablet'),
+(102, 'Jane Smith', 'Keyboard'),
+(102, 'Jane Smith', 'Mouse'),
+(103, 'Emily Clark', 'Phone');
+-- Question 2
+ CREATE TABLE orders(
+OrderID INT PRIMARY KEY,
+customerName VARCHAR(100)
 );
-
--- Add the customer data
-INSERT INTO orders VALUES
+INSERT INTO orders (OrderID, CustomerName)
+VALUES
 (101, 'John Doe'),
 (102, 'Jane Smith'),
 (103, 'Emily Clark');
 
--- Connect the tables
-ALTER TABLE order_details
-ADD FOREIGN KEY (order_id) REFERENCES orders(order_id);
+-- Product  table 
+CREATE TABLE product(
+product_id INT primary key,
+productName varchar(100),
+quantity INT,
+order_id INT,
+foreign key(order_id) references orders(OrderID)
+);
 
--- Remove customer names from order details
-ALTER TABLE order_details
-DROP COLUMN customer_name;
+insert into product(product_id,productName,quantity,order_id)
+values 
+(1,'laptop',2,101),
+(2,'Mouse',1,101),
+(3,'Tablet',3,102),
+(4,'Keyboard',2,102),
+(5,'Mouse',1,102),
+(6,'Phone',1,103);
+
+
